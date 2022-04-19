@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const { login } = useAuth();
+    const { login, loginGoogle, loginFacebook } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -15,7 +15,6 @@ function Login() {
 
     async function handleLogin(e) {
         e.preventDefault()
-
         try{
             setError("");
             setLoading(true);
@@ -24,9 +23,33 @@ function Login() {
         } catch{
             setLoading(false);
             setError("Failed to log in")
-        }
+        } 
+    }
 
-        
+    async function handleGoogleLogin(e) {
+        e.preventDefault()
+        try{
+            setError("");
+            setLoading(true);
+            await loginGoogle()
+            navigate('/')
+        } catch{
+            setLoading(false);
+            setError("Failed to log in")
+        } 
+    }
+
+    async function handleFacebookLogin(e) {
+        e.preventDefault()
+        try{
+            setError("");
+            setLoading(true);
+            await loginFacebook()
+            navigate('/')
+        } catch{
+            setLoading(false);
+            setError("Failed to log in")
+        } 
     }
 
     return (
@@ -46,6 +69,8 @@ function Login() {
                         </Form.Group>
                         <Button disabled={loading} className='w-100 mt-2' type='submit'>Log In</Button>
                     </Form>
+                    <Button onClick={handleGoogleLogin}>Google</Button>
+                    <Button onClick={handleFacebookLogin}>Facebook</Button>
                     <div className="text-center w-100 mt-3">
                         <Link to={'/forgot-password'}>Forgot Password?</Link>
                     </div>

@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase'
+import { GoogleAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider } from "firebase/auth";
 
-
-
+const providerFacebook = new FacebookAuthProvider();
+const providerGoogle = new GoogleAuthProvider();
 
 export const AuthContext = React.createContext()
 
@@ -32,7 +34,8 @@ export function AuthProvider({ children }) {
         resetPassword,
         updateEmail,
         updatePassword,
-        savedLogin,
+        loginGoogle,
+        loginFacebook
      }
 
     function signup(email, password){
@@ -63,6 +66,13 @@ export function AuthProvider({ children }) {
         return auth.signInWithCustomToken(token)
     }
 
+    function loginGoogle(){
+        return auth.signInWithPopup(providerGoogle);
+    }
+
+    function loginFacebook(){
+        return auth.signInWithPopup(providerFacebook);
+    }
 
     return (
         <AuthContext.Provider value={ value }>
