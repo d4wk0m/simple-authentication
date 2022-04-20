@@ -62,10 +62,6 @@ export function AuthProvider({ children }) {
         return auth.currentUser.updatePassword(password);
     }
 
-    function savedLogin(token){
-        return auth.signInWithCustomToken(token)
-    }
-
     function loginGoogle(){
         return auth.signInWithPopup(providerGoogle);
     }
