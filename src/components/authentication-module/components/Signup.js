@@ -28,15 +28,52 @@ function Signup() {
             setError("Failed to create an account")
             setLoading(false)
         }
+    }
 
-        
+    async function handleGoogleSignup(e) {
+        e.preventDefault()
+        try{
+            setError("");
+            setLoading(true);
+            await loginGoogle()
+            navigate('/')
+        } catch{
+            setLoading(false);
+            setError("Failed to log in")
+        } 
+    }
+
+    async function handleFacebookSignup(e) {
+        e.preventDefault()
+        try{
+            setError("");
+            setLoading(true);
+            await loginFacebook()
+            navigate('/')
+        } catch{
+            setLoading(false);
+            setError("Failed to log in")
+        } 
+    }
+
+    async function handleGithubSignup(e) {
+        e.preventDefault()
+        try{
+            setError("");
+            setLoading(true);
+            await loginGithub()
+            navigate('/')
+        } catch{
+            setLoading(false);
+            setError("Failed to log in")
+        } 
     }
 
     return (
         <>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-4">Sign Up</h2>
+                    <h2>Sign Up</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={ handleSignup}>
                         <Form.Group id="email">
@@ -51,11 +88,14 @@ function Signup() {
                             <Form.Label>Repeat Password</Form.Label>
                             <Form.Control type="password" ref={passwordConfirmRef} required />
                         </Form.Group>
-                        <Button disabled={loading} className='w-100 mt-2' type='submit'>Sign Up</Button>
+                        <Button disabled={loading} type='submit'>Sign Up</Button>
                     </Form>
+                    <Button onClick={handleGoogleSignup}>Google</Button>
+                    <Button onClick={handleFacebookSignup}>Facebook</Button>
+                    <Button onClick={handleGithubSignup}>Github</Button>
                 </Card.Body>
             </Card>
-            <div className="w-100 text-center mt-2">
+            <div>
                 Already have an account? <Link to="/login">Log In</Link>
             </div>
         </>
