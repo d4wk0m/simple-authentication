@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const { login, loginGoogle, loginFacebook } = useAuth();
+    const { login, loginGoogle, loginFacebook, loginGithub } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -52,11 +52,24 @@ function Login() {
         } 
     }
 
+    async function handleGithubLogin(e) {
+        e.preventDefault()
+        try{
+            setError("");
+            setLoading(true);
+            await loginGithub()
+            navigate('/')
+        } catch{
+            setLoading(false);
+            setError("Failed to log in")
+        } 
+    }
+
     return (
         <>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-4">Log In</h2>
+                    <h2>Log In</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={ handleLogin}>
                         <Form.Group id="email">
@@ -71,12 +84,13 @@ function Login() {
                     </Form>
                     <Button onClick={handleGoogleLogin}>Google</Button>
                     <Button onClick={handleFacebookLogin}>Facebook</Button>
-                    <div className="text-center w-100 mt-3">
+                    <Button onClick={handleGithubLogin}>Github</Button>
+                    <div>
                         <Link to={'/forgot-password'}>Forgot Password?</Link>
                     </div>
                 </Card.Body>
             </Card>
-            <div className="w-100 text-center mt-2">
+            <div>
                 Need an account? <Link to="/signup">Sign Up</Link>
             </div>
         </>
